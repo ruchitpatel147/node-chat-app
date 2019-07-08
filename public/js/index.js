@@ -8,10 +8,13 @@ socket.on('disconnect',function(){
 socket.on('newEmail',function (email) {
 console.log(email);
 });
-socket.emit('createMessage',{
+/*socket.emit('createMessage',{
     from:"abc123@gmail.com",
     text: "fine"
-});
+});*/
 socket.on('newMessage',function(msg){
     console.log("msg",msg);
+});
+socket.on('broadcast',function (m1) {
+   console.log("broadcast",m1);
 });

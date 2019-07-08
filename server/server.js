@@ -15,7 +15,21 @@ io.on('connection',(socket)=>{
 
    socket.on('disconnect',()=>{
        console.log("user was disconnected");
-   })
+   });
+   socket.emit('newEmail',{
+       from :"ruchit44patel@gmail.com",
+       text : "hello how are u ?"
+   });
+    socket.on('createEmail',function (email) {
+        console.log(email);
+    });
+    socket.on('createMessage',function (message) {
+        console.log("createMessage",message);
+
+    });
+    socket.emit('newMessage',{
+       text:"hello how are u?"
+    });
 });
 
 server.listen(port,()=>{

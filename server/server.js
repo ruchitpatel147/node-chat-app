@@ -16,13 +16,21 @@ io.on('connection',(socket)=>{
    socket.on('disconnect',()=>{
        console.log("user was disconnected");
    });
+   socket.emit('welcome',{
+       from:"admin",
+       text:"welcome to the chat app"
+   });
+   socket.broadcast.emit('joined',{
+       from :"admin",
+       text:"New user joined"
+   });
    /*socket.emit('newEmail',{
        from :"ruchit44patel@gmail.com",
        text : "hello how are u ?"
-   });*/
+   });
     socket.on('createEmail',function (email) {
         console.log(email);
-    });
+    });*/
     socket.on('createMessage',function (message) {
         console.log("createMessage",message);
         io.emit('broadcast',{

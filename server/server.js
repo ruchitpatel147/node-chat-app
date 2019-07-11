@@ -43,23 +43,23 @@ io.on('connection',(socket)=>{
     socket.on('createlocation',function (result) {
 
         io.emit('generatelocation',generatelocation('admin',result.latitude,result.longitude));
-
+        app.get("/server/getlocation", async(req, res, next) => {
+            //res.send("sadasda");
+            getlocation(result.latitude,result.longitude,(error,result)=>{
+                if(result){
+                    //a = result;
+                    console.log(result);
+                    res.send({result});
+                }if(error){
+                    console.log(error);
+                }
+            });
     })
  /*   socket.emit('newMessage',{
        text:"hello how are u?"
     });*/
 });
-app.get("/server/getlocation", async(req, res, next) => {
-    //res.send("sadasda");
-    getlocation(4,8,(error,result)=>{
-         if(result){
-              //a = result;
-             console.log(result);
-             res.send({result});
-         }if(error){
-             console.log(error);
-         }
-     });
+
 
    //console.log("result",result1);
    //  console.log("result",a);

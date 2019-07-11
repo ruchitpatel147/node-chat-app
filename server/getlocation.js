@@ -1,6 +1,6 @@
 const axios = require('axios');
 exports.getlocation = (a,b,callback) => {
-    var url = `https://api.darksky.net/forecast/a99beb112ef6bc554c3cca10bc800b64/21.170240,72.831062`;
+    var url = `https://api.darksky.net/forecast/a99beb112ef6bc554c3cca10bc800b64/${a},${b}`;
     axios.get(url).then((resp)=>{
        // console.log(resp.data.currently.summary);
         callback(undefined,resp.data.currently.summary);

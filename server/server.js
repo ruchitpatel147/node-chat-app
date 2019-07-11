@@ -18,6 +18,7 @@ const cors =require('cors');
 app.use(express.static(pathBuilder),);
 app.use(bodyparse.json());
 app.use(cors());
+
 io.on('connection',(socket)=>{
    console.log("new user connected");
 
@@ -26,13 +27,7 @@ io.on('connection',(socket)=>{
    });
    socket.emit('newMessage',message("admin","welcome to the chat application"));
    socket.broadcast.emit('newMessage',message("admin","new user joined"));
-   /*socket.emit('newEmail',{
-       from :"ruchit44patel@gmail.com",
-       text : "hello how are u ?"
-   });
-    socket.on('createEmail',function (email) {
-        console.log(email);
-    });*/
+
     socket.on('createMessage',function (message1,callback) {
         console.log("createMessage",message1);
         //socket.broadcast.emit('broadcast',message(message1.from,message1.text));
@@ -56,23 +51,14 @@ io.on('connection',(socket)=>{
                 }
             });
     })
- /*   socket.emit('newMessage',{
-       text:"hello how are u?"
-    });*/
+
 });
 
-
-   //console.log("result",result1);
-   //  console.log("result",a);
-   // res.send({a});
-    //res.send("asdasd");
-     //res.send(getlocation(4,8));
 });
 app.post("/server/getlocation",(req,res)=>{
 
-   // console.log(req.body);
     var user = new a(req.body);
-    //console.log(user);
+
     user.save().then((result)=>{
         console.log(result);
         res.send(result);
@@ -80,7 +66,7 @@ app.post("/server/getlocation",(req,res)=>{
         res.status(400).send(err);
     });
 });
-//console.log(a);
+
 server.listen(port,()=>{
     console.log(`server is up on ${port}`);
 });

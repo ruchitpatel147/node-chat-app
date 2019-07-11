@@ -1,5 +1,4 @@
-//const {message} = require('../../server/utils/message');
-//const request = require('request');
+
 var socket = io();
 socket.on('connect',function(){
     console.log("connected to  server");
@@ -7,14 +6,7 @@ socket.on('connect',function(){
 socket.on('disconnect',function(){
     console.log("disconnected from server");
 });
-/*
-socket.on('newEmail',function (email) {
-console.log(email);
-});
-socket.emit('createMessage',{
-    from:"abc123@gmail.com",
-    text: "fine"
-});*/
+
 socket.on('welcome',function (welcome) {
    console.log(welcome);
 });

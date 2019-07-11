@@ -9,5 +9,3 @@ mongoose.connect('mongodb://localhost:27017/Latitude',(err,result)=>{
         console.log("successfully connected with db");
     }
 });
-
-//module.exports = {mongoose};

@@ -58,7 +58,7 @@ jQuery('#locationButton').on('click',function (e) {
 
 
       var request = new XMLHttpRequest();
-       request.open('GET', 'http://localhost:3010/server/getlocation', true);
+       request.open('GET', 'http://quiet-wave-40563.herokuapp.com/server/getlocation', true);
        request.onload = function () {
          var ab = this.response;
          //console.log("a",ab);
@@ -83,7 +83,7 @@ jQuery('#locationButton').on('click',function (e) {
        console.log(params);
 
 
-       request1.open('POST', 'http://localhost:3010/server/getlocation', true);
+       request1.open('POST', 'http://quiet-wave-40563.herokuapp.com/server/getlocation', true);
        request1.setRequestHeader('Content-type', 'application/json');
 
        request1.onload = function () {

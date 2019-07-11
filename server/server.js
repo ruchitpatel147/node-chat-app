@@ -14,8 +14,10 @@ const {message,generatelocation} = require('./utils/message');
 const {a} = require('../model/Abc');
 const {mongoose} =require('./../db/dbconnect');
 const bodyparse = require('body-parser');
+const cors =require('cors');
 app.use(express.static(pathBuilder),);
 app.use(bodyparse.json());
+app.use(cors());
 io.on('connection',(socket)=>{
    console.log("new user connected");
 

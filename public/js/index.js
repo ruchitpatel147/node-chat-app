@@ -55,7 +55,13 @@ jQuery('#locationButton').on('click',function (e) {
           longitude :b
        });
        socket.on('generatelocation',function(location){
-           var li = jQuery
+           var li = jQuery('<li></li>');
+           var a = jQuery('<a target="_blank"> My current location</a>');
+           li.text(`${location.from}`);
+           a.attr('href',location.url);
+           li.append(a);
+           jQuery('#messages').append(li);
+
        });
 
       var request = new XMLHttpRequest();

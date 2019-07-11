@@ -9,8 +9,8 @@ const app = express();
 const port = process.env.PORT || 3010;
 const server = http.createServer(app);
 const io = socketIO(server);
-const {getlocation,generatelocation} = require('./getlocation');
-const {message} = require('./utils/message');
+const {getlocation} = require('./getlocation');
+const {message,generatelocation} = require('./utils/message');
 const {a} = require('../model/Abc');
 const {mongoose} =require('./../db/dbconnect');
 const bodyparse = require('body-parser');
@@ -39,7 +39,9 @@ io.on('connection',(socket)=>{
 
     });
     socket.on('createlocation',function (result) {
+
         io.emit('generatelocation',generatelocation('admin',result.latitude,result.longitude));
+
     })
  /*   socket.emit('newMessage',{
        text:"hello how are u?"

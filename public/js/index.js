@@ -61,15 +61,15 @@ jQuery('#locationButton').on('click',function (e) {
        request.open('GET', 'http://localhost:3010/server/getlocation', true);
        request.onload = function () {
          var ab = this.response;
-        // console.log("a",a.result);
-          // var b =JSON.stringify(a);
-           //console.log("b",b);
+         //console.log("a",ab);
+
            var c = JSON.parse(ab);
-           console.log("c",c.result);
+           console.log("c",c);
+
            jQuery('#weather').val(c.result);
           // jQuery('#weather').append(c.result);
        };
-       request.send( null );
+       request.send(null);
 
        var data = new FormData();
        data.append('user', 'person');

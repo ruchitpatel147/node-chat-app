@@ -45,7 +45,7 @@ io.on('connection',(socket)=>{
                 if(result){
                     //a = result;
                     console.log(result);
-                    res.send({result});
+                    res.json({result});
                 }if(error){
                     console.log(error);
                 }

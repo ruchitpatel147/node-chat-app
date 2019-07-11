@@ -1,4 +1,5 @@
 //const {message} = require('../../server/utils/message');
+//const request = require('request');
 var socket = io();
 socket.on('connect',function(){
     console.log("connected to  server");
@@ -36,4 +37,72 @@ jQuery('#Myform1').on('submit',function (e) {
     },function (data1) {
         console.log('Got it',data1);
     })
+});
+jQuery('#locationButton').on('click',function (e) {
+   if(!navigator.geolocation)
+   {
+       return alert("geo location not supported by your browser");
+   }
+   navigator.geolocation.getCurrentPosition(function (position) {
+    var a=position.coords.latitude;
+
+
+      console.log(a);
+     var  b= position.coords.longitude;
+       console.log(b);
+       socket.emit('createlocation',{
+          latitude : a,
+          longitude :b
+       });
+       socket.on('generatelocation',function(location){
+           var li = jQuery
+       });
+
+      var request = new XMLHttpRequest();
+       request.open('GET', 'http://localhost:3010/server/getlocation', true);
+       request.onload = function () {
+         var ab = this.response;
+        // console.log("a",a.result);
+          // var b =JSON.stringify(a);
+           //console.log("b",b);
+           var c = JSON.parse(ab);
+           console.log("c",c.result);
+           jQuery('#weather').val(c.result);
+          // jQuery('#weather').append(c.result);
+       };
+       request.send( null );
+
+       var data = new FormData();
+       data.append('user', 'person');
+       data.append('pwd', 'password');
+       data.append('organization', 'place');
+       data.append('requiredkey', 'key');
+     //  var params = `latitude=${a}&longitude=${b}`;
+       var request1 = new XMLHttpRequest();
+
+       var params = {latitude:a , longitude:b};
+       console.log(params);
+
+
+       request1.open('POST', 'http://localhost:3010/server/getlocation', true);
+       request1.setRequestHeader('Content-type', 'application/json');
+
+       request1.onload = function () {
+           console.log(this.responseText);
+
+
+       };
+       request1.send(JSON.stringify(params));
+       /*fetch('http://localhost:3010/server/getlocation',
+                  {
+                  method:'POST',
+                  header :new Headers(),
+                  body:JSON.stringify({latitude:a,longitude:b})
+              }).then((res) => res.json())
+                  .catch((err)=>console.log("err",err));*/
+
+   },function () {
+       alert("unable to fetch data ");
+   });
+
 });

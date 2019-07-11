@@ -38,7 +38,7 @@ io.on('connection',(socket)=>{
     socket.on('createlocation',function (result) {
 
         io.emit('generatelocation',generatelocation('admin',result.latitude,result.longitude));
-        app.use(cors());
+       // app.use(cors());
         app.get("/server/getlocation", async(req, res, next) => {
             //res.send("sadasda");
             getlocation(result.latitude,result.longitude,(error,result)=>{

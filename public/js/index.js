@@ -19,6 +19,15 @@ socket.on('newMessage',function(msg){
     li.text(`${msg.from} : ${msg.text}`);
     jQuery('#messages').append(li);
 });
+socket.on('generatelocation',function(location){
+    var li = jQuery('<li></li>');
+    var a = jQuery('<a target="_blank"> My current location</a>');
+    li.text(`${location.from}`);
+    a.attr('href',location.url);
+    li.append(a);
+    jQuery('#messages').append(li);
+
+});
 
 
 jQuery('#Myform1').on('submit',function (e) {
@@ -46,15 +55,7 @@ jQuery('#locationButton').on('click',function (e) {
           latitude : a,
           longitude :b
        });
-       socket.on('generatelocation',function(location){
-           var li = jQuery('<li></li>');
-           var a = jQuery('<a target="_blank"> My current location</a>');
-           li.text(`${location.from}`);
-           a.attr('href',location.url);
-           li.append(a);
-           jQuery('#messages').append(li);
 
-       });
 
       var request = new XMLHttpRequest();
        request.open('GET', 'http://localhost:3010/server/getlocation', true);

@@ -9,12 +9,6 @@ const scrollTop = message.prop('scrollTop');
 const scrollHeight = message.prop('scrollHeight');
 const newMessageHeight = newMesage.innerHeight();
 const lastMessageHeight = newMesage.prev().innerHeight();
-  //  console.log("message",message);
-    console.log("clientHeight",clientHeight);
-    console.log("scrollTop",scrollTop);
-   console.log("scrollHeight",scrollHeight);
-    console.log("newMessageHeight",newMessageHeight);
-    console.log("lastMessageHeight",lastMessageHeight);
     if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight)
     {
 
@@ -23,7 +17,15 @@ const lastMessageHeight = newMesage.prev().innerHeight();
     }
 }
 socket.on('connect',function(){
-    console.log("connected to  server");
+    var param = jQuery.deparam(location.search);
+    socket.emit('join',param,function (err) {
+        if(err){
+            alert(err);
+            window.location.href="/";
+        }else{
+            console.log("no error");
+        }
+    });
 });
 socket.on('disconnect',function(){
     console.log("disconnected from server");

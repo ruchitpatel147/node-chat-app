@@ -75,12 +75,13 @@ socket.on('generatelocation',function(location){
 
 jQuery('#Myform1').on('submit',function (e) {
     e.preventDefault();
+    var username = jQuery.deparam(location.search);
     if(jQuery('[name=message]').val()=="")
     {
         return alert("enter msg");
     }
     socket.emit('createMessage',{
-        from:"User",
+        from:username.name,
         text:jQuery('[name=message]').val()
     },function (data1) {
         jQuery('[name=message]').val('');

@@ -26,16 +26,16 @@ io.on('connection',(socket)=>{
    socket.on('disconnect',()=>{
        console.log("user was disconnected");
    });
-   socket.emit('newMessage',message("admin","welcome to the chat application"));
-   socket.broadcast.emit('newMessage',message("admin","new user joined"));
-
    socket.on('join',function (result,callback) {
        if(!isRealString(result.name) || !isRealString(result.room)){
 
            callback("name and room are required");
 
        }
-           callback();
+       socket.join(result.room);
+       socket.emit('newMessage',message("admin","welcome to the chat application"));
+       socket.broadcast.to(result.room).emit('newMessage',message("admin",`${result.name} has joined`));
+       callback();
    });
     socket.on('createMessage',function (message1,callback) {
         console.log("createMessage",message1);

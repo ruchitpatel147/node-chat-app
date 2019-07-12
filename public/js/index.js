@@ -14,17 +14,19 @@ socket.on('joined',function (joined) {
    console.log(joined);
 });
 socket.on('newMessage',function(msg){
-    console.log("msg",msg);
+   // console.log("msg",msg);
     var li = jQuery('<li></li>');
-    li.text(`${msg.from} : ${msg.text}`);
+    const date = moment(msg.createdAt).format('h:mm a');
+    li.text(`${msg.from} : ${msg.text} : ${date}`);
     jQuery('#messages').append(li);
 });
 socket.on('generatelocation',function(location){
     var li = jQuery('<li></li>');
+    const date = moment(location.createdAt).format('h:mm a');
     var a = jQuery('<a target="_blank"> My current location</a>');
-    li.text(`${location.from} : `);
+    li.text(`${location.from} :`);
     a.attr('href',location.url);
-    li.append(a);
+    li.append(a, ` ${date}`);
     jQuery('#messages').append(li);
 
 });

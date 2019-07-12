@@ -17,6 +17,8 @@ const lastMessageHeight = newMesage.prev().innerHeight();
     console.log("lastMessageHeight",lastMessageHeight);
     if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight)
     {
+
+        console.log(message.scrollTop);
         message.scrollTop(scrollHeight);
     }
 }

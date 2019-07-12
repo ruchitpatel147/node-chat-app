@@ -15,25 +15,44 @@ socket.on('joined',function (joined) {
 });
 socket.on('newMessage',function(msg){
    // console.log("msg",msg);
-    var li = jQuery('<li></li>');
+    var template = jQuery('#template').html();
+    const date = moment(msg.createdAt).format('h:mm a');
+    var html = Mustache.render(template,{
+        text : msg.text,
+        from : msg.from,
+        createdAt : date
+    });
+    jQuery('#messages').append(html);
+   /* var li = jQuery('<li></li>');
     const date = moment(msg.createdAt).format('h:mm a');
     li.text(`${msg.from} : ${msg.text} : ${date}`);
-    jQuery('#messages').append(li);
+    jQuery('#messages').append(li);*/
 });
 socket.on('generatelocation',function(location){
-    var li = jQuery('<li></li>');
+    var template = jQuery('#locationtemplate').html();
+    const date = moment(location.createdAt).format('h:mm a');
+    var html = Mustache.render(template,{
+        from : location.from,
+        url : location.url,
+        createdAt : date
+    });
+    jQuery('#messages').append(html);
+    /*  var li = jQuery('<li></li>');
     const date = moment(location.createdAt).format('h:mm a');
     var a = jQuery('<a target="_blank"> My current location</a>');
     li.text(`${location.from} :`);
     a.attr('href',location.url);
     li.append(a, ` ${date}`);
-    jQuery('#messages').append(li);
+    jQuery('#messages').append(li);*/
 
 });
 
-
 jQuery('#Myform1').on('submit',function (e) {
     e.preventDefault();
+    if(jQuery('[name=message]').val()=="")
+    {
+        return alert("enter msg");
+    }
     socket.emit('createMessage',{
         from:"User",
         text:jQuery('[name=message]').val()

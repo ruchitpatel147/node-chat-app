@@ -1,5 +1,25 @@
 
-var socket = io();
+const socket = io();
+
+function scrolldown(){
+const message = jQuery('#messages');
+const newMesage = message.children('li:last-child');
+const clientHeight = message.prop('clientHeight');
+const scrollTop = message.prop('scrollTop');
+const scrollHeight = message.prop('scrollHeight');
+const newMessageHeight = newMesage.innerHeight();
+const lastMessageHeight = newMesage.prev().innerHeight();
+  //  console.log("message",message);
+    console.log("clientHeight",clientHeight);
+    console.log("scrollTop",scrollTop);
+   console.log("scrollHeight",scrollHeight);
+    console.log("newMessageHeight",newMessageHeight);
+    console.log("lastMessageHeight",lastMessageHeight);
+    if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight)
+    {
+        message.scrollTop(scrollHeight);
+    }
+}
 socket.on('connect',function(){
     console.log("connected to  server");
 });
@@ -23,6 +43,7 @@ socket.on('newMessage',function(msg){
         createdAt : date
     });
     jQuery('#messages').append(html);
+    scrolldown();
    /* var li = jQuery('<li></li>');
     const date = moment(msg.createdAt).format('h:mm a');
     li.text(`${msg.from} : ${msg.text} : ${date}`);
@@ -37,6 +58,7 @@ socket.on('generatelocation',function(location){
         createdAt : date
     });
     jQuery('#messages').append(html);
+    scrolldown();
     /*  var li = jQuery('<li></li>');
     const date = moment(location.createdAt).format('h:mm a');
     var a = jQuery('<a target="_blank"> My current location</a>');

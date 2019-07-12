@@ -32,7 +32,7 @@ io.on('connection',(socket)=>{
         console.log("createMessage",message1);
         //socket.broadcast.emit('broadcast',message(message1.from,message1.text));
         io.emit('newMessage',message(message1.from,message1.text));
-        callback('this is from the server');
+        callback();
 
     });
     socket.on('createlocation',function (result) {
@@ -53,6 +53,22 @@ io.on('connection',(socket)=>{
     })
 
 });
+    socket.on('createlocation2',function (result) {
+
+        app.get("/server/getlocation", async(req, res, next) => {
+            //res.send("sadasda");
+            getlocation(result.latitude,result.longitude,(error,result)=>{
+                if(result){
+                    //a = result;
+                    console.log(result);
+                    res.json({result});
+                }if(error){
+                    console.log(error);
+                }
+            });
+        })
+
+    });
 
 });
 app.post("/server/getlocation",(req,res)=>{
@@ -63,7 +79,8 @@ app.post("/server/getlocation",(req,res)=>{
         console.log(result);
         res.send(result);
     },(err)=>{
-        res.status(400).send(err);
+        console.log("error",err);
+        //res.status(400).send(err);
     });
 });
 

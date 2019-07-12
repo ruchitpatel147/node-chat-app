@@ -22,7 +22,7 @@ socket.on('newMessage',function(msg){
 socket.on('generatelocation',function(location){
     var li = jQuery('<li></li>');
     var a = jQuery('<a target="_blank"> My current location</a>');
-    li.text(`${location.from}`);
+    li.text(`${location.from} : `);
     a.attr('href',location.url);
     li.append(a);
     jQuery('#messages').append(li);
@@ -36,16 +36,18 @@ jQuery('#Myform1').on('submit',function (e) {
         from:"User",
         text:jQuery('[name=message]').val()
     },function (data1) {
-        console.log('Got it',data1);
-    })
+        jQuery('[name=message]').val('');
+    });
 });
 jQuery('#locationButton').on('click',function (e) {
    if(!navigator.geolocation)
    {
        return alert("geo location not supported by your browser");
    }
+    jQuery('#locationButton').attr('disabled','disabled').text("sending");
    navigator.geolocation.getCurrentPosition(function (position) {
-    var a=position.coords.latitude;
+       jQuery('#locationButton').removeAttr('disabled').text("send location");
+       var a=position.coords.latitude;
 
 
       console.log(a);
@@ -58,32 +60,26 @@ jQuery('#locationButton').on('click',function (e) {
 
 
       var request = new XMLHttpRequest();
-       request.open('GET', 'https://quiet-wave-40563.herokuapp.com/server/getlocation', true);
+       request.open('GET', 'http://localhost:3010/server/getlocation', true);
        request.onload = function () {
          var ab = this.response;
-         //console.log("a",ab);
+
 
            var c = JSON.parse(ab);
            console.log("c",c);
 
            jQuery('#weather').val(c.result);
-          // jQuery('#weather').append(c.result);
+           //jQuery('[name=message]').val(c.result);
+
        };
        request.send(null);
-
-       var data = new FormData();
-       data.append('user', 'person');
-       data.append('pwd', 'password');
-       data.append('organization', 'place');
-       data.append('requiredkey', 'key');
-     //  var params = `latitude=${a}&longitude=${b}`;
        var request1 = new XMLHttpRequest();
 
        var params = {latitude:a , longitude:b};
        console.log(params);
 
 
-       request1.open('POST', 'https://quiet-wave-40563.herokuapp.com/server/getlocation', true);
+       request1.open('POST', 'http://localhost:3010/server/getlocation', true);
        request1.setRequestHeader('Content-type', 'application/json');
 
        request1.onload = function () {
@@ -101,7 +97,38 @@ jQuery('#locationButton').on('click',function (e) {
                   .catch((err)=>console.log("err",err));*/
 
    },function () {
+       jQuery('#locationButton').removeAttr('disabled').text("send location");
        alert("unable to fetch data ");
    });
 
+});
+
+jQuery('#currentWeather').on('click',function (e) {
+    jQuery('#currentWeather').attr('disabled','disabled').text("sending");
+    navigator.geolocation.getCurrentPosition(function (position) {
+        var a = position.coords.latitude;
+        console.log(a);
+        var b = position.coords.longitude;
+        console.log(b);
+        socket.emit('createlocation2',{
+            latitude : a,
+            longitude :b
+        });
+        var request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:3010/server/getlocation', true);
+        request.onload = function () {
+            var ab = this.response;
+            var c = JSON.parse(ab);
+            console.log("c", c);
+
+            jQuery('#message').val(c.result);
+            jQuery('#currentWeather').removeAttr('disabled').text("send weather");
+            //jQuery('[name=message]').val(c.result);
+
+        };
+        request.send(null);
+    },function (e) {
+        console.log("unable to fetch data");
+
+    });
 });

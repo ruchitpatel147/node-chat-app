@@ -3,18 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+  <link rel="stylesheet" href="css/home.css">
 </head>
-<body>
- <h1>welcome to my website</h1>
- <ol id="messages"></ol>
+<body class="chat">
+ <div class="chat__sidebar">
+     <h3>People</h3>
+     <div id="users"></div>
+ </div>
+ <div class="chat__main">
+     <ol id="messages" class="chat__messages"></ol>
+      <div class="chat__footer">
+            <form id="Myform1">
+                <input type="text" name="message" id="message" placeholder="message" autofocus autocomplete="off">
+                <button id="button1" >send</button>
 
- <form id="Myform1">
-     <input type="text" name="message" placeholder="message">
-     <button id="button1" >send</button>
- </form>
- <br>
- <button id="locationButton">send location</button><br>
- current weather : <input type="text" id="weather">
+            </form>
+          <button id="locationButton">send location</button>
+          <button id="currentWeather">current weather</button>
+
+
+      </div>
+ </div>
+
 <script src="/socket.io/socket.io.js"></script>
  <script src="js/libs/jquery-3.4.1.min.js"></script>
 <script  src="./js/index.js"></script>

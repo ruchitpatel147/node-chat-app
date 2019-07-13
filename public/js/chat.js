@@ -30,7 +30,14 @@ socket.on('connect',function(){
 socket.on('disconnect',function(){
     console.log("disconnected from server");
 });
+socket.on('updatelist',function (result) {
+   var a = jQuery('<ol></ol>');
+   result.forEach(function (name) {
+       a.append(jQuery('<li></li>').text(name));
 
+   });
+   jQuery('#users').html(a);
+});
 socket.on('welcome',function (welcome) {
    console.log(welcome);
 });

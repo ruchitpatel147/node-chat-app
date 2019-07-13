@@ -26,9 +26,11 @@ io.on('connection',(socket)=>{
 
    socket.on('disconnect',()=>{
        console.log("user was disconnected");
-       var a = user.removeUser("1");
-       console.log(a);
-       console.log(user.users);
+    var user1 = user.removeUser(socket.id);
+    if(user1){
+        io.to(user1.room).emit('updatelist',user.getuserlist(user1.room));
+        io.to(user1.room).emit('newMessage',message("admin",`${user1.name} has left`));
+    }
    });
    socket.on('join',function (result,callback) {
        if(!isRealString(result.name) || !isRealString(result.room)){
@@ -36,9 +38,11 @@ io.on('connection',(socket)=>{
            callback("name and room are required");
 
        }
-       user.addUser("1",result.name,result.room);
-       console.log(user.users);
        socket.join(result.room);
+       user.removeUser(socket.id);
+       user.addUser(socket.id,result.name,result.room);
+
+       io.to(result.room).emit('updatelist',user.getuserlist(result.room));
        socket.emit('newMessage',message("admin","welcome to the chat application"));
        socket.broadcast.to(result.room).emit('newMessage',message("admin",`${result.name} has joined`));
        callback();

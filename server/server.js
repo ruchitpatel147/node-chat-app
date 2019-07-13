@@ -17,6 +17,7 @@ const {mongoose} =require('./../db/dbconnect');
 const bodyparse = require('body-parser');
 const cors =require('cors');
 const {Users} = require('./utils/Users');
+const {nameValidation} = require('./utils/nameValidation');
 app.use(express.static(pathBuilder),);
 app.use(bodyparse.json());
 app.use(cors());
@@ -32,25 +33,41 @@ io.on('connection',(socket)=>{
         io.to(user1.room).emit('newMessage',message("admin",`${user1.name} has left`));
     }
    });
-   socket.on('join',function (result,callback) {
+   socket.on('join',async function (result,callback) {
+       var a = user.getuserlist(result.room);
+     //  var name = nameValidation(result.name,a);
+      // console.log("return from function",name);
        if(!isRealString(result.name) || !isRealString(result.room)){
 
            callback("name and room are required");
 
        }
-       socket.join(result.room);
-       user.removeUser(socket.id);
-       user.addUser(socket.id,result.name,result.room);
+       else if(nameValidation(result.name,a))
+       {
 
-       io.to(result.room).emit('updatelist',user.getuserlist(result.room));
-       socket.emit('newMessage',message("admin","welcome to the chat application"));
-       socket.broadcast.to(result.room).emit('newMessage',message("admin",`${result.name} has joined`));
-       callback();
+           console.log("name already available");
+           callback("name already available try with different name ");
+       }
+       else
+           {
+
+               socket.join(result.room);
+               user.removeUser(socket.id);
+               user.addUser(socket.id,result.name,result.room);
+               io.to(result.room).emit('updatelist',user.getuserlist(result.room));
+               socket.emit('newMessage',message("admin","welcome to the chat application"));
+               socket.broadcast.to(result.room).emit('newMessage',message("admin",`${result.name} has joined`));
+             //  var b =user.getuserlist(result.room);
+              // console.log(b);
+               callback();
+           }
+
    });
     socket.on('createMessage',function (message1,callback) {
+        var getuser = user.getuser(socket.id);
         console.log("createMessage",message1);
         //socket.broadcast.emit('broadcast',message(message1.from,message1.text));
-        io.emit('newMessage',message(message1.from,message1.text));
+        io.to(getuser.room).emit('newMessage',message(message1.from,message1.text));
         callback();
 
     });

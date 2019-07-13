@@ -3,12 +3,12 @@ const socket = io();
 
 function scrolldown(){
 const message = jQuery('#messages');
-const newMesage = message.children('li:last-child');
+const newMessage = message.children('li:last-child');
 const clientHeight = message.prop('clientHeight');
 const scrollTop = message.prop('scrollTop');
 const scrollHeight = message.prop('scrollHeight');
-const newMessageHeight = newMesage.innerHeight();
-const lastMessageHeight = newMesage.prev().innerHeight();
+const newMessageHeight = newMessage.innerHeight();
+const lastMessageHeight = newMessage.prev().innerHeight();
     if(clientHeight+scrollTop+newMessageHeight+lastMessageHeight>=scrollHeight)
     {
 

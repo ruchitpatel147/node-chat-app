@@ -16,15 +16,19 @@ const {a} = require('../model/Abc');
 const {mongoose} =require('./../db/dbconnect');
 const bodyparse = require('body-parser');
 const cors =require('cors');
+const {Users} = require('./utils/Users');
 app.use(express.static(pathBuilder),);
 app.use(bodyparse.json());
 app.use(cors());
-
+var user = new Users();
 io.on('connection',(socket)=>{
    console.log("new user connected");
 
    socket.on('disconnect',()=>{
        console.log("user was disconnected");
+       var a = user.removeUser("1");
+       console.log(a);
+       console.log(user.users);
    });
    socket.on('join',function (result,callback) {
        if(!isRealString(result.name) || !isRealString(result.room)){
@@ -32,6 +36,8 @@ io.on('connection',(socket)=>{
            callback("name and room are required");
 
        }
+       user.addUser("1",result.name,result.room);
+       console.log(user.users);
        socket.join(result.room);
        socket.emit('newMessage',message("admin","welcome to the chat application"));
        socket.broadcast.to(result.room).emit('newMessage',message("admin",`${result.name} has joined`));
